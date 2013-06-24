@@ -25,6 +25,10 @@ feature 'Page' do
   let(:page) { Capybara::Wheel::Page }
 
   its('initializes') { page.new.should be_true }
+
+  it 'has access to capybara' do
+    page.new.methods.include?(:capybara).should be_true
+  end
 end
 
 feature 'Element' do
