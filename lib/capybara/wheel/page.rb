@@ -4,6 +4,8 @@ module Capybara
   module Wheel
     class Page
 
+      include Capybara::Wheel
+
       # actively visits page and executes block in context
       def visit(&block)
         capybara.visit(path)
