@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'capybara/wheel'
 
 RSpec.configure do |config|
-
   config.before(:each, :some_hook) do
     @hook_passed_on = true
   end

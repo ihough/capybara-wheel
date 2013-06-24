@@ -1,6 +1,6 @@
 module Capybara
   module Wheel
-    module Page
+    class Page
 
       # actively visits page and executes block in context
       def visit(&block)
@@ -30,6 +30,11 @@ module Capybara
       # Return true if the browser is on this page
       def on_page?
         raise NotImplementedError, "implement me, e.g. using #has_title?"
+      end
+
+      # callback commonly used for on_page?
+      def has_title?(expected_title)
+        capybara.has_css?("head title", :text => expected_title)
       end
 
     end
