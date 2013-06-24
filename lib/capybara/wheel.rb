@@ -1,4 +1,4 @@
-Dir["capybara/wheel"].each {|file| require file }
+Dir.glob(File.join(File.dirname(__FILE__), 'wheel', '*.rb')).each {|file| require file}
 require "capybara"
 require 'capybara/dsl'
 
@@ -11,7 +11,6 @@ module Capybara
     def capybara
       Capybara.current_session
     end
-
     def self.included(base)
       base.instance_eval do
         alias :background :before

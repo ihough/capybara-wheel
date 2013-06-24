@@ -20,3 +20,15 @@ feature 'runs as a wheel feature', :some_hook do
     @hook_passed_on.should be_true
   end
 end
+
+feature 'Page' do
+  let(:page) { Capybara::Wheel::Page }
+
+  its('initializes') { page.new.should be_true }
+end
+
+feature 'Element' do
+  let(:element) { Capybara::Wheel::Element }
+
+  its('initializes') { element.new.should be_true }
+end
