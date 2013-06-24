@@ -16,6 +16,20 @@ module Capybara
     # main mixin to access wheel
 
     include Capybara::DSL
+    include Rails.application.routes.url_helpers
+
+    def capybara
+      Capybara.current_session
+    end
+
+    def self.included(klass)
+      klass.instance_eval do
+        alias :background :before
+        alias :scenario :it
+        alias :given :let
+        alias :given! :let!
+      end
+    end
 
 
   end
