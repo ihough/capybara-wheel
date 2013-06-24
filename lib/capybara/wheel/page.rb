@@ -1,3 +1,5 @@
+require 'capybara/wheel'
+
 module Capybara
   module Wheel
     class Page

@@ -8,9 +8,11 @@ module Capybara
 
     include Capybara::DSL
 
+    # module Base
     def capybara
       Capybara.current_session
     end
+
     def self.included(base)
       base.instance_eval do
         alias :background :before
@@ -23,7 +25,7 @@ module Capybara
     module FeatureOverride
       def feature(*args, &block)
         options = {
-          type: :wheel,
+          type: :wheel_feature,
           caller: caller
         }
         options.merge!(args.pop) if args.last.is_a?(Hash)
@@ -35,3 +37,4 @@ module Capybara
 end
 
 extend Capybara::Wheel::FeatureOverride
+RSpec.configuration.include Capybara::Wheel, :wheel_feature

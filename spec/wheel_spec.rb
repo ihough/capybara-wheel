@@ -13,7 +13,7 @@ feature 'runs as a wheel feature', :some_hook do
   end
 
   it 'should be set as a wheel feature' do
-    example.metadata[:type].should == :wheel
+    example.metadata[:type].should == :wheel_feature
   end
 
   it 'should pass the right hook' do
@@ -31,4 +31,8 @@ feature 'Element' do
   let(:element) { Capybara::Wheel::Element }
 
   its('initializes') { element.new('@some-selector').should be_true }
+
+  it 'has access to capybara' do
+    element.new('@some-selector').methods.include?(:capybara).should be_true
+  end
 end
