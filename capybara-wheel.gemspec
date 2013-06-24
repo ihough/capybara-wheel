@@ -6,7 +6,7 @@ require 'capybara/wheel/version'
 Gem::Specification.new do |spec|
   spec.name          = "capybara-wheel"
   spec.version       = Capybara::Wheel::VERSION
-  spec.authors       = ["Gabriel Rotbart"]
+  spec.authors       = ["Gabriel Rotbart", "Mike Willams"]
   spec.email         = ["gabe@rotbart.net"]
   spec.description   = %q{An experiement in stable capybara}
   spec.summary       = %q{Creating (another) page model gem based around making capybara tests more stable with no need for waits}
@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
 
   spec.add_dependency "capybara", "~> 2.1"
+  spec.add_dependency "rspec"
 end
