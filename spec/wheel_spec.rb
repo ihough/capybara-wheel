@@ -30,5 +30,5 @@ end
 feature 'Element' do
   let(:element) { Capybara::Wheel::Element }
 
-  its('initializes') { element.new.should be_true }
+  its('initializes') { element.new('@some-selector').should be_true }
 end
