@@ -38,4 +38,4 @@ module Capybara
 end
 
 extend Capybara::Wheel::FeatureOverride
-RSpec.configuration.include Capybara::Wheel, :wheel_feature
+RSpec.configuration.include Capybara::Wheel, wheel_feature: true
