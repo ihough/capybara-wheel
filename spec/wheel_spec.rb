@@ -24,8 +24,6 @@ end
 feature 'Page' do
   let(:page) { Capybara::Wheel::Page }
 
-  its('initializes') { page.new.should be_true }
-
   it 'has access to capybara' do
     page.new.methods.include?(:capybara).should be_true
   end
@@ -34,9 +32,19 @@ end
 feature 'Element' do
   let(:element) { Capybara::Wheel::Element }
 
-  its('initializes') { element.new('@some-selector').should be_true }
-
   it 'has access to capybara' do
     element.new('@some-selector').methods.include?(:capybara).should be_true
   end
+end
+
+feature 'SubElement' do
+
+  let!(:parent_element) { Capybara::Wheel::Element.new('@parent-selector') }
+  let!(:subelement)     { class ASubElement < Capybara::Wheel::SubElement; end }
+
+  it 'calls parent element capybara_element' do
+    ASubElement.new.should be_true
+  end
+
+  # some method sent to element instant sends new for sub element
 end
