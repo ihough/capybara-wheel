@@ -1,10 +1,10 @@
-require 'capybara/wheel'
+require 'capybara/wheel/includes'
 
 module Capybara
   module Wheel
     class Page
 
-      include Capybara::Wheel
+      include Capybara::Wheel::Includes
 
       # actively visits page and executes block in context
       def visit(&block)

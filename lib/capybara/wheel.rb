@@ -7,13 +7,6 @@ module Capybara
   module Wheel
     # main mixin to access wheel
 
-    include Capybara::DSL
-
-    # module Base
-    def capybara
-      Capybara.current_session
-    end
-
     def self.included(base)
       base.instance_eval do
         alias :background :before

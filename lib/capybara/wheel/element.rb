@@ -1,4 +1,4 @@
-require 'capybara/wheel'
+require 'capybara/wheel/includes'
 require 'forwardable'
 
 module Capybara
@@ -6,7 +6,7 @@ module Capybara
     class Element
 
         extend Forwardable
-        include Capybara::Wheel
+        include Capybara::Wheel::Includes
 
         def initialize(selector)
           @selector = selector
