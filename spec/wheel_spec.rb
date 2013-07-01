@@ -27,6 +27,13 @@ feature 'Page' do
   it 'has access to capybara' do
     page.new.methods.include?(:capybara).should be_true
   end
+
+  context 'can create an element instance' do
+    it 'and create a method for it' do
+      page.element('rad_element', '#rad-selector').new.should respond_to(:rad_element)
+    end
+  end
+
 end
 
 feature 'Element' do
@@ -35,6 +42,7 @@ feature 'Element' do
   it 'has access to capybara' do
     element.new('#some-selector').methods.include?(:capybara).should be_true
   end
+
 end
 
 feature 'SubElement' do
@@ -60,4 +68,24 @@ feature 'SubElement' do
   end
 
   # some method sent to element instant sends new for sub element
+end
+
+feature 'ElementFactory' do
+  let(:subject)   { Capybara::Wheel::ElementFactory }
+  let(:selector)  { '#rad-selector'}
+
+  it 'creates an element' do
+    Capybara::Wheel::Element.should_receive(:new).with(selector)
+
+    subject.create_element(selector)
+  end
+
+  it 'generated instance evalutes block' do
+    test_block = Proc.new do
+      def evaled_method
+      end
+    end
+
+    subject.create_element(selector, test_block).should respond_to(:evaled_method)
+  end
 end

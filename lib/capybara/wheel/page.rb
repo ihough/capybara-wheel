@@ -41,6 +41,13 @@ module Capybara
         capybara.has_css?("head title", :text => expected_title)
       end
 
+      def self.element(name, selector, &block)
+        element_instance = Capybara::Wheel::ElementFactory.create_element(selector, block)
+
+        define_method(name.to_sym) { element_instance }
+        self
+      end
+
     end
   end
 end
