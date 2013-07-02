@@ -30,7 +30,7 @@ feature 'Page' do
 
   context 'can create an element instance' do
     it 'and create a method for it' do
-      page.element('rad_element', '#rad-selector').new.should respond_to(:rad_element)
+      page.element('RadElement', '#rad-selector').new.should respond_to(:rad_element)
     end
   end
 
