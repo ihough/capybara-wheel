@@ -43,11 +43,9 @@ module Capybara
       end
 
       def self.element(name, selector, &block)
-        element_factory = lambda do
-          Capybara::Wheel::ElementFactory.create_element(lambda_selector, llambda_block)
-        end
+        element_instant = Capybara::Wheel::ElementFactory.create_element(selector, block)
 
-        define_method(underscore(name).to_sym) { element_factory(selector, block) }
+        define_method(underscore(name).to_sym) { element_instant }
         self
       end
 
