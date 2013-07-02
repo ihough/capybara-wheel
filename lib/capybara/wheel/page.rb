@@ -44,7 +44,7 @@ module Capybara
       def self.element(name, selector, &block)
         element_instance = Capybara::Wheel::ElementFactory.create_element(selector, block)
 
-        define_method(name.to_sym) { element_instance }
+        define_method(name.downcase.to_sym) { element_instance }
         self
       end
 

@@ -11,12 +11,12 @@ module Capybara
         element
       end
 
-      # element_instance = Capybara::Wheel::Element.new(selector)
-      # element_instance.instance_exec do
-      #   block.call
-      # end if block_given?
+      def self.create_subelement(selector, parent_element, block = nil)
+        subelement = Capybara::Wheel::SubElement.new(selector, parent_element)
+        subelement.instance_eval(&block) if block
 
-      # define_method(name.to_sym) { element_instance }
+        subelement
+      end
 
     end
   end

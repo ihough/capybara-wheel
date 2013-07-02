@@ -43,10 +43,23 @@ feature 'Element' do
     element.new('#some-selector').methods.include?(:capybara).should be_true
   end
 
+  context 'can create a subelement instance' do
+    let(:subelement_name)     { 'rad_subelement' }
+    let(:subelement_selector) { '#rad-sub-selector' }
+    let(:element_instance)    { element.subelement(subelement_name, subelement_selector).new('#rad-selector') }
+
+    it 'and create a method for it' do
+      element_instance.should respond_to(:"#{subelement_name}")
+    end
+
+    it 'create a subelement with parent element context' do
+      element_instance.send(:"#{subelement_name}").parent.should == element_instance
+    end
+  end
+
 end
 
 feature 'SubElement' do
-
   let(:parent_selector) { '#parent-selector'}
   let(:sub_selector)    { '#sub-selector'}
   let!(:parent_element) { Capybara::Wheel::Element.new(parent_selector) }
@@ -65,9 +78,9 @@ feature 'SubElement' do
   end
 
   it 'calls parent element capybara_element' do
+    pending
   end
 
-  # some method sent to element instant sends new for sub element
 end
 
 feature 'ElementFactory' do
