@@ -5,6 +5,7 @@ module Capybara
     class Page
 
       include Capybara::Wheel::Includes
+      extend Capybara::Wheel::Includes::ClassIncludes
 
       # actively visits page and executes block in context
       def visit(&block)
@@ -46,7 +47,7 @@ module Capybara
           Capybara::Wheel::ElementFactory.create_element(lambda_selector, llambda_block)
         end
 
-        define_method(name.downcase.to_sym) { element_factory(selector, block) }
+        define_method(underscore(name).to_sym) { element_factory(selector, block) }
         self
       end
 

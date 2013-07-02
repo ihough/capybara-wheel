@@ -3,7 +3,6 @@ require 'capybara'
 require 'capybara/dsl'
 require 'rspec'
 
-#Allows access to Capybara native methods
 module Capybara
   module Wheel
     module Includes
@@ -12,6 +11,16 @@ module Capybara
 
       def capybara
         Capybara.current_session
+      end
+
+      module ClassIncludes
+        def underscore(string)
+          string.gsub(/::/, '/').
+                  gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+                  gsub(/([a-z\d])([A-Z])/,'\1_\2').
+                  tr("-", "_").
+                  downcase
+        end
       end
 
     end

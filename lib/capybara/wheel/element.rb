@@ -7,6 +7,7 @@ module Capybara
 
         extend Forwardable
         include Capybara::Wheel::Includes
+        extend Capybara::Wheel::Includes::ClassIncludes
 
         def initialize(selector)
           @selector = selector
@@ -21,21 +22,17 @@ module Capybara
                         :present?
 
         def present?
-          begin
-            capybara_element.visible?
-          rescue Capybara::ElementNotFound => e
-            puts "#{e} on #{Time.now.strftime("%H:%I:%S:%L")}"
-            false
-          end
+          capybara_element.visible?
+        rescue Capybara::ElementNotFound => e
+          puts "#{e} on #{Time.now.strftime("%H:%I:%S:%L")}"
+          false
         end
 
         def visible?
-          begin
-            capybara_element.visible?
-          rescue Capybara::ElementNotFound => e
-            puts "#{e} on #{Time.now.strftime("%H:%I:%S:%L")}"
-            false
-          end
+          capybara_element.visible?
+        rescue Capybara::ElementNotFound => e
+          puts "#{e} on #{Time.now.strftime("%H:%I:%S:%L")}"
+          false
         end
 
         def self.subelement(name, selector, &block)
@@ -43,7 +40,7 @@ module Capybara
             Capybara::Wheel::ElementFactory.create_subelement(selector, parent_element, block)
           end
 
-          define_method(name.downcase.to_sym) { subelement_factory.call(self) }
+          define_method(underscore(name).to_sym) { subelement_factory.call(self) }
           self
         end
 
