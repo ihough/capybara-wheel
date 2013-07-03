@@ -44,16 +44,16 @@ feature 'Element' do
   end
 
   context 'can create a subelement instance' do
-    let(:subelement_name)     { 'rad_subelement' }
+    let(:subelement_name)     { 'RadSubElement' }
     let(:subelement_selector) { '#rad-sub-selector' }
     let(:element_instance)    { element.subelement(subelement_name, subelement_selector).new('#rad-selector') }
 
     it 'and create a method for it' do
-      element_instance.should respond_to(:"#{subelement_name}")
+      element_instance.should respond_to(:rad_sub_element)
     end
 
     it 'create a subelement with parent element context' do
-      element_instance.send(:"#{subelement_name}").parent.should == element_instance
+      element_instance.send(:rad_sub_element).parent.should == element_instance
     end
   end
 

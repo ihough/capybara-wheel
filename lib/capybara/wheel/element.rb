@@ -35,7 +35,7 @@ module Capybara
           false
         end
 
-        def self.subelement(name, selector, &block)
+        def self.initialize_subelement(name, selector, block = nil)
           subelement_factory = lambda do |parent_element|
             Capybara::Wheel::ElementFactory.create_subelement(selector, parent_element, block)
           end
@@ -43,6 +43,11 @@ module Capybara
           define_method(underscore(name).to_sym) { subelement_factory.call(self) }
           self
         end
+
+        def subelement(name, selector, &block)
+          self.class.initialize_subelement(name, selector, block)
+        end
+
 
         protected
 
