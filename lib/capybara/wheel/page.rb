@@ -46,6 +46,7 @@ module Capybara
         begin
           element_klass = const_set("#{name}", Capybara::Wheel::ElementFactory.create_element_klass(selector, block))
         rescue NameError
+          puts "We recommend using capitalized element and subelement names"
           name = name.capitalize!
           retry
         end

@@ -18,6 +18,7 @@ module Capybara
         subclass
       end
 
+      #TODO: Pass object not an instance
       def self.create_subelement(selector, parent_element, block = nil)
         subelement = Capybara::Wheel::SubElement.new(selector, parent_element)
         subelement.instance_eval(&block) if block
