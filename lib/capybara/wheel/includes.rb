@@ -21,6 +21,10 @@ module Capybara
                   tr("-", "_").
                   downcase
         end
+
+        def make_const(string)
+
+        end
       end
 
     end
