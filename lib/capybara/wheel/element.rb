@@ -9,8 +9,8 @@ module Capybara
         include Capybara::Wheel::Includes
         extend Capybara::Wheel::Includes::ClassIncludes
 
-        def initialize(selector)
-          @selector = selector
+        def initialize(selector = nil)
+          @selector = selector if selector
         end
 
         def_delegators  :capybara_element,
@@ -48,16 +48,15 @@ module Capybara
           self.class.initialize_subelement(name, selector, block)
         end
 
+        def selector
+          @selector
+        end
 
         protected
 
         # Finds a capybara element representing this thing
         def capybara_element
           capybara.find(selector)
-        end
-
-        def selector
-          @selector
         end
 
     end

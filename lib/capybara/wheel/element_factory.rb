@@ -4,11 +4,18 @@ module Capybara
   module Wheel
     class ElementFactory
 
-      def self.create_element(selector, block = nil)
-        element = Capybara::Wheel::Element.new(selector)
-        element.instance_eval(&block) if block
+      def self.create_element_klass(selector, block = nil)
+        subclass = Class.new(Capybara::Wheel::Element)
 
-        element
+        _selector = selector
+
+        subclass.class_exec do
+          define_method(:selector) { @selector = _selector}
+        end
+
+        subclass.class_eval(&block) if block
+
+        subclass
       end
 
       def self.create_subelement(selector, parent_element, block = nil)

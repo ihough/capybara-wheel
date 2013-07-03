@@ -43,9 +43,9 @@ module Capybara
       end
 
       def self.element(name, selector, &block)
-        element_instant = Capybara::Wheel::ElementFactory.create_element(selector, block)
+        element_klass = const_set(name, Capybara::Wheel::ElementFactory.create_element_klass(selector, block))
 
-        define_method(underscore(name).to_sym) { element_instant }
+        define_method(underscore(name).to_sym) { element_klass.new(selector) }
         self
       end
 

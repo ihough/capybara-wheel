@@ -46,7 +46,7 @@ feature 'Element' do
   context 'can create a subelement instance' do
     let(:subelement_name)     { 'RadSubElement' }
     let(:subelement_selector) { '#rad-sub-selector' }
-    let(:element_instance)    { element.subelement(subelement_name, subelement_selector).new('#rad-selector') }
+    let(:element_instance)    { element.new.subelement(subelement_name, subelement_selector).new('#rad-selector') }
 
     it 'and create a method for it' do
       element_instance.should respond_to(:rad_sub_element)
@@ -84,13 +84,17 @@ feature 'SubElement' do
 end
 
 feature 'ElementFactory' do
-  let(:subject)   { Capybara::Wheel::ElementFactory }
-  let(:selector)  { '#rad-selector'}
+  let(:subject)               { Capybara::Wheel::ElementFactory }
+  let(:selector)              { '#rad-selector'}
+  let(:created_element_klass) { subject.create_element_klass(selector) }
+
 
   it 'creates an element' do
-    Capybara::Wheel::Element.should_receive(:new).with(selector)
+    created_element_klass.superclass.should == Capybara::Wheel::Element
+  end
 
-    subject.create_element(selector)
+  it 'allows access to the selector' do
+    created_element_klass.new.selector.should == selector
   end
 
   it 'generated instance evalutes block' do
@@ -99,6 +103,6 @@ feature 'ElementFactory' do
       end
     end
 
-    subject.create_element(selector, test_block).should respond_to(:evaled_method)
+    subject.create_element_klass(selector, test_block).new.should respond_to(:evaled_method)
   end
 end
