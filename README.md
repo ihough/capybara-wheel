@@ -65,7 +65,24 @@ A page needs two template method implamented:
       # e.g. Capybara.find('h1', text: 'Login Page')
     end
 
-> #### Element and Subelement model
+> Example:
+>
+>     class SuperVillanConsole << Capybara::Wheel::Page
+>
+>       def path
+>         super_villan_console_path
+>       end
+>
+>       def on_page?
+>         has_title?('Destroy all humans')
+>       end
+>     end
+
+***
+
+> ### Element and Subelement model
+
+#### Element
 
 Once inside a Page model, it has access to the `element` method.
 
@@ -79,7 +96,59 @@ The `element` method does several important things:
 1. It defines a Page method element_name which allows access and initializes...
 2. an Element model
 
-Out of the box, Element accepts all the old familar Capybara Element action / query methods (e.g. click, set, text, visible?) and passes it on to a callback which will find the element on the page and excute the action (or query)
+Out of the box, Element accepts all the old familar Capybara Element actions / queries (e.g. click, set, text, visible?).Once an action or query is sent to a Wheel element it then finds the native Capybara element and passes it on. This ensures that each method call is executed on the newset version of the element.
+
+Passing a block to element gives access to the Element object for the purpose of implamenting SubElements (see below) or rolling your own methods:
+
+**The `capybara_element` method is the direct accessor to the native Capybara element callback.**
+
+> Example
+>
+>     element 'ButtonOfDoom', '#doom-button' do
+>
+>        def armed?
+>          capybara_element.text == 'Armed'
+>        end
+>
+>      end
+>
+>     element 'MissleTracker', '.missle-tracker'
+>
+>
+>     #=> SuperVillanConsole.new.button_of_doom.armed?
+>
+>     #=> SuperVillanConsole.new.missle_tracker.visible?
+>
+
+***
+
+#### Subelement
+
+An element block also accepts the `subelement` method.
+
+    subelement 'SubElementName', 'selector' *optional block*
+
+A subelement behaves exactly like element with one difference, the find is scoped to the containing (or parent) element which reduces ambiguity.
+
+> Example
+>
+>     element 'ButtonOfDoom', '#doom-button' do
+>
+>        subelement 'ArmingKey', '#key' do
+>
+>          def turn
+>            capybara_element.click
+>          end
+>
+>        end
+>     end
+>
+>     #=> SuperVillanConsole.new.button_of_doom.turn
+
+***
+***
+***
+
 
 
 ## Contributing
