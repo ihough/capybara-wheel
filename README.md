@@ -39,14 +39,14 @@ In spec_helper.rb:
 
 ## Modeling
 
-> ### Page Model
+### Page Model
 
 
 To model a new page:
 
     class NewPage < Capybara::Wheel::Page
 
-A page needs two template method implamented:
+A page needs to implament two methods:
 
     def path
       # implament to support visiting the page directly
@@ -80,7 +80,7 @@ A page needs two template method implamented:
 
 ***
 
-> ### Element and Subelement model
+### Element and Subelement model
 
 #### Element
 
