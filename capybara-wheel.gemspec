@@ -6,10 +6,10 @@ require 'capybara/wheel/version'
 Gem::Specification.new do |spec|
   spec.name          = "capybara-wheel"
   spec.version       = Capybara::Wheel::VERSION
-  spec.authors       = ["Gabriel Rotbart", "Mike Willams"]
-  spec.email         = ["gabe@rotbart.net"]
-  spec.description   = %q{An experiement in stable capybara}
-  spec.summary       = %q{Creating (another) page model gem based around making capybara tests more stable with no need for waits}
+  spec.authors       = ["@gabrielrotbart"]
+  spec.email         = ["gabe@hooroo.com"]
+  spec.description   = %q{Keeping the rodent on track}
+  spec.summary       = %q{Creating (yet another) page model gem based around making capybara tests more stable with no need for waits}
   spec.homepage      = ""
   spec.license       = "MIT"
 

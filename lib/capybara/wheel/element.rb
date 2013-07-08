@@ -19,7 +19,18 @@ module Capybara
                         :checked?,
                         :text,
                         :visible?,
-                        :present?
+                        :present?,
+                        :selected?,
+                        :disabled?,
+                        :tag_name,
+                        :value,
+                        :set,
+                        :select_option,
+                        :unselect_option,
+                        :hover,
+                        :[]
+
+
 
         def present?
           capybara_element.visible?
