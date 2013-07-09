@@ -151,7 +151,8 @@ A subelement behaves exactly like element with one difference, the find is scope
  Two buttons have an `li` element with the `.key` class. We want to be able to find one and turn it without accidently causing world peace:
 
      element 'ButtonOfDoom', '#doom-button' do
-
+        
+        # reference to this key is scoped inside the #doom-button element
         subelement 'ArmingKey', 'li.key' do
 
           def turn
@@ -162,7 +163,8 @@ A subelement behaves exactly like element with one difference, the find is scope
      end
 
      element 'ButtonOfWorldPeace', '#peace-button' do
-
+       
+       # reference to this key is scoped inside the #peace-button element
        subelement 'ArmingKey', 'li.key' do
 
          def turn
