@@ -63,7 +63,7 @@ To model a new page:
 
     class NewPage < Capybara::Wheel::Page
 
-A page needs to implament two methods:
+A page needs to implement two methods:
 
     def path
       # implament to support visiting the page directly
