@@ -15,6 +15,23 @@ Capybara wheel is a page model framework which natively and (hopefully) easily e
 
 *A special thank you to @woollyams for the initial concept*
 
+## Why Wheel?
+
+Browser driven acceptance tests are notorious for being unstable and hard to maintain. The main culprits are:
+
+1. Timing issues which result in unstable waits and "is the page loaded?" queries accross the specs.
+
+2. Memoizing the state of the page (e.g. `search_result = Capybara.find('li')` ) at a certain time. Each spec run might memoize a different state, leading to unstable tests.
+
+3. No convention around page interactions (e.g. sometimes calling a page model, sometimes a native find with a selector).
+
+Wheel solves all these by forcing the spec to always act or query the currect state of the page.
+If the page is not in a state that the spec expects, the native Capybara wait will be used until it is; removing the need to `sleep` or build mechanics to test for page loads.
+
+Specs are always written in one uniform, clean, way - always calling the same model when dealing with the same page / element. No more hunting multiple specs to change a selector.
+
+The Element model DSL is still eaily customisable just like "normal" page model classes so domain specfic applications are just as easy, resulting in descriptive, easy to read specs.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -96,7 +113,7 @@ The `element` method does several important things:
 1. It defines a Page method element_name which allows access and initializes...
 2. an Element model
 
-Out of the box, Element accepts all the old familar Capybara Element actions / queries (e.g. click, set, text, visible?).Once an action or query is sent to a Wheel element it then finds the native Capybara element and passes it on. This ensures that each method call is executed on the newset version of the element.
+Out of the box, Element accepts all the old familar Capybara Element actions / queries (e.g. click, set, text, visible?). Once an action or query is sent to a Wheel element it then finds the native Capybara element and passes it on. This ensures that each method call is executed on the newset version of the element.
 
 Passing a block to element gives access to the Element object for the purpose of implamenting SubElements (see below) or rolling your own methods:
 
@@ -120,7 +137,6 @@ Passing a block to element gives access to the Element object for the purpose of
 >     #=> SuperVillanConsole.new.missle_tracker.visible?
 >
 
-***
 
 #### Subelement
 
