@@ -82,18 +82,18 @@ A page needs to implament two methods:
       # e.g. Capybara.find('h1', text: 'Login Page')
     end
 
-> Example:
->
->     class SuperVillanConsole << Capybara::Wheel::Page
->
->       def path
->         super_villan_console_path
->       end
->
->       def on_page?
->         has_title?('Destroy all humans')
->       end
->     end
+**Example:**
+
+     class SuperVillanConsole << Capybara::Wheel::Page
+
+       def path
+         super_villan_console_path
+       end
+
+       def on_page?
+         has_title?('Destroy all humans')
+       end
+     end
 
 ***
 
@@ -119,23 +119,23 @@ Passing a block to element gives access to the Element object for the purpose of
 
 **The `capybara_element` method is the direct accessor to the native Capybara element callback.**
 
-> Example
->
->     element 'ButtonOfDoom', '#doom-button' do
->
->        def armed?
->          capybara_element.text == 'Armed'
->        end
->
->      end
->
->     element 'MissleTracker', '.missle-tracker'
->
->
->     #=> SuperVillanConsole.new.button_of_doom.armed?
->
->     #=> SuperVillanConsole.new.missle_tracker.visible?
->
+**_Example:_**
+
+     element 'ButtonOfDoom', '#doom-button' do
+
+        def armed?
+          capybara_element.text == 'Armed'
+        end
+
+      end
+
+     element 'MissleTracker', '.missle-tracker'
+
+
+     #=> SuperVillanConsole.new.button_of_doom.armed?
+
+     #=> SuperVillanConsole.new.missle_tracker.visible?
+
 
 
 #### Subelement
@@ -146,21 +146,34 @@ An element block also accepts the `subelement` method.
 
 A subelement behaves exactly like element with one difference, the find is scoped to the containing (or parent) element which reduces ambiguity.
 
-> Example
->
->     element 'ButtonOfDoom', '#doom-button' do
->
->        subelement 'ArmingKey', '#key' do
->
->          def turn
->            capybara_element.click
->          end
->
->        end
->     end
->
->     #=> SuperVillanConsole.new.button_of_doom.turn
+**Example:**
 
+ Two buttons have an `li` element with the `.key` class. We want to be able to find one and turn it without accidently causing world peace:
+
+     element 'ButtonOfDoom', '#doom-button' do
+
+        subelement 'ArmingKey', 'li.key' do
+
+          def turn
+            capybara_element.click
+          end
+
+        end
+     end
+
+     element 'ButtonOfWorldPeace', '#peace-button' do
+
+       subelement 'ArmingKey', 'li.key' do
+
+         def turn
+           capybara_element.click
+         end
+
+       end
+     end
+
+     #=> SuperVillanConsole.new.button_of_world_peace.arming_key.turn
+     #=> SuperVillanConsole.new.button_of_doom.arming_key.turn
 ***
 ***
 ***
