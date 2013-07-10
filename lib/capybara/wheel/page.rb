@@ -37,7 +37,6 @@ module Capybara
         raise NotImplementedError, "implement me, e.g. using #has_title?"
       end
 
-      # callback commonly used for on_page?
       def has_title?(expected_title)
         capybara.has_css?("head title", :text => expected_title)
       end

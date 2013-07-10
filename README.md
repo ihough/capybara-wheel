@@ -82,7 +82,7 @@ A page needs to implement two methods:
       # e.g. Capybara.find('h1', text: 'Login Page')
     end
 
-**Example:**
+**_Example:_**
 
      class SuperVillanConsole << Capybara::Wheel::Page
 
@@ -146,7 +146,7 @@ An element block also accepts the `subelement` method.
 
 A subelement behaves exactly like element with one difference, the find is scoped to the containing (or parent) element which reduces ambiguity.
 
-**Example:**
+**_Example:_**
 
  Two buttons have an `li` element with the `.key` class. We want to be able to find one and turn it without accidently causing world peace:
 

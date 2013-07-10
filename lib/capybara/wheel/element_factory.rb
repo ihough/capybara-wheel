@@ -10,7 +10,7 @@ module Capybara
         _selector = selector
 
         subclass.class_exec do
-          define_method(:selector) { @selector = _selector}
+          define_method(:selector) { @selector = _selector }
         end
 
         subclass.class_eval(&block) if block
