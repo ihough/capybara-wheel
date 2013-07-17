@@ -9,8 +9,11 @@ module Capybara
         include Capybara::Wheel::Includes
         extend Capybara::Wheel::Includes::ClassIncludes
 
-        def initialize(selector = nil)
+        attr_reader :scope
+
+        def initialize(selector = nil, scope = nil)
           @selector = selector if selector
+          @scope    = scope
         end
 
         def_delegators  :capybara_element,
@@ -46,17 +49,24 @@ module Capybara
           false
         end
 
-        def self.subelement(name, selector, block = nil)
+        def self.element(name, selector, block = nil)
           subelement_factory = lambda do |parent_element|
-            Capybara::Wheel::ElementFactory.create_subelement(selector, parent_element, block)
+            Capybara::Wheel::ElementFactory.create_element(selector, parent_element, block)
           end
 
           define_method(underscore(name).to_sym) { subelement_factory.call(self) }
           self
         end
 
+        def element(name, selector, &block)
+          self.class.element(name, selector, block)
+        end
+
+        #TODO: deprecated in 0.0.5
         def subelement(name, selector, &block)
-          self.class.subelement(name, selector, block)
+          puts "subelement will be deprecated in future versions."
+          puts "Calling element inside an element block will scope it to the parent element"
+          element(name, selector, block)
         end
 
         def selector
@@ -65,9 +75,14 @@ module Capybara
 
         protected
 
+
         # Finds a capybara element representing this thing
         def capybara_element
-          capybara.find(selector)
+          scope_capybara.find(selector)
+        end
+
+        def scope_capybara
+          scope.nil? ? capybara : scope.send(:capybara_element)
         end
 
     end
