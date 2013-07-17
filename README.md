@@ -63,7 +63,7 @@ To model a new page:
 
     class NewPage < Capybara::Wheel::Page
 
-A page needs to implament two methods:
+A page needs to implement two methods:
 
     def path
       # implament to support visiting the page directly
@@ -82,7 +82,7 @@ A page needs to implament two methods:
       # e.g. Capybara.find('h1', text: 'Login Page')
     end
 
-**Example:**
+**_Example:_**
 
      class SuperVillanConsole << Capybara::Wheel::Page
 
@@ -146,12 +146,13 @@ An element block also accepts the `subelement` method.
 
 A subelement behaves exactly like element with one difference, the find is scoped to the containing (or parent) element which reduces ambiguity.
 
-**Example:**
+**_Example:_**
 
  Two buttons have an `li` element with the `.key` class. We want to be able to find one and turn it without accidently causing world peace:
 
      element 'ButtonOfDoom', '#doom-button' do
-
+        
+        # reference to this key is scoped inside the #doom-button element
         subelement 'ArmingKey', 'li.key' do
 
           def turn
@@ -162,7 +163,8 @@ A subelement behaves exactly like element with one difference, the find is scope
      end
 
      element 'ButtonOfWorldPeace', '#peace-button' do
-
+       
+       # reference to this key is scoped inside the #peace-button element
        subelement 'ArmingKey', 'li.key' do
 
          def turn

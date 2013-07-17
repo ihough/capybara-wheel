@@ -1,5 +1,5 @@
 Dir.glob(File.join(File.dirname(__FILE__), 'wheel', '*.rb')).each {|file| require file}
-require "capybara"
+require 'capybara'
 require 'capybara/dsl'
 require 'rspec'
 
