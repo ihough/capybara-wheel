@@ -69,6 +69,12 @@ module Capybara
           element(name, selector, block)
         end
 
+        def self.subelement(name, selector, &block)
+          puts "subelement will be deprecated in future versions."
+          puts "Calling element inside an element block will scope it to the parent element"
+          element(name, selector, &block)
+        end
+
         def selector
           @selector
         end
