@@ -10,7 +10,7 @@ Capybara wheel is a page model framework which natively and (hopefully) easily e
   - Enforces single point of reference to selectors / elements.
   - Also helps reducing memoizations.
 
-- Subelements structure to scope finds to a specific section of the page.
+- Element hierarchy structure to scope finds to a specific section of the page.
   - Reduces ambiguity.
 
 *A special thank you to @woollyams for the initial concept*
@@ -97,7 +97,7 @@ A page needs to implement two methods:
 
 ***
 
-### Element and Subelement model
+### Element model
 
 #### Element
 
@@ -115,7 +115,7 @@ The `element` method does several important things:
 
 Out of the box, Element accepts all the old familar Capybara Element actions / queries (e.g. click, set, text, visible?). Once an action or query is sent to a Wheel element it then finds the native Capybara element and passes it on. This ensures that each method call is executed on the newset version of the element.
 
-Passing a block to element gives access to the Element object for the purpose of implamenting SubElements (see below) or rolling your own methods:
+Passing a block to element gives access to the Element object for the purpose of implamenting a subelement (see below) or rolling your own customised methods:
 
 **The `capybara_element` method is the direct accessor to the native Capybara element callback.**
 
@@ -138,22 +138,22 @@ Passing a block to element gives access to the Element object for the purpose of
 
 
 
-#### Subelement
+#### (Sub)Element
 
-An element block also accepts the `subelement` method.
+An element block also accepts the `element` method.
 
-    subelement 'SubElementName', 'selector' *optional block*
+    element 'SubElementName', 'selector' *optional block*
 
-A subelement behaves exactly like element with one difference, the find is scoped to the containing (or parent) element which reduces ambiguity.
+When called inside an element block, the element behaves like an Element but is now scoped to the containing (or parent) element, which reduces ambiguity.
 
 **_Example:_**
 
  Two buttons have an `li` element with the `.key` class. We want to be able to find one and turn it without accidently causing world peace:
 
      element 'ButtonOfDoom', '#doom-button' do
-        
+
         # reference to this key is scoped inside the #doom-button element
-        subelement 'ArmingKey', 'li.key' do
+        element 'ArmingKey', 'li.key' do
 
           def turn
             capybara_element.click
@@ -163,9 +163,9 @@ A subelement behaves exactly like element with one difference, the find is scope
      end
 
      element 'ButtonOfWorldPeace', '#peace-button' do
-       
+
        # reference to this key is scoped inside the #peace-button element
-       subelement 'ArmingKey', 'li.key' do
+       element 'ArmingKey', 'li.key' do
 
          def turn
            capybara_element.click
