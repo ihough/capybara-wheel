@@ -32,6 +32,25 @@ Specs are always written in one uniform, clean, way - always calling the same mo
 
 The Element model DSL is still eaily customisable just like "normal" page model classes so domain specfic applications are just as easy, resulting in descriptive, easy to read specs.
 
+## Example spec:
+
+    feature "Supervillan Console" do
+
+     let(:supervillan_console) { SuperVillanConsole.new }
+
+     it 'can destroy the world with the push of a button' do
+        supervillan_console.visit do |page|
+          page.button_of_doom.should be_present
+          page.button_of_doom.click
+
+          # assert that world was destroyed
+        end
+     end
+
+    end
+
+More spec goodness below.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -176,6 +195,52 @@ When called inside an element block, the element behaves like an Element but is 
 
      #=> SuperVillanConsole.new.button_of_world_peace.arming_key.turn
      #=> SuperVillanConsole.new.button_of_doom.arming_key.turn
+
+## Specs
+
+Wheel specs are written to always refer to the models and to never refer to Capybara directly. The page methods we implemented above allows us the do:
+
+    let(:some_page) { SomePageModel.new }
+
+    it 'can visit a page' do
+      some_page.visit
+    end
+
+The visit page would use the `on_page?` method to determine if we are indeed on the page. It will use Capyara's internal wait to poll the page until it is ready. We can then even excute within the scope of the page:
+
+    it 'can visit a page and pass a block to execute' do
+      some_page.visit do | page |
+        page.some_element.should be_visible
+      end
+    end
+
+    it 'can also just check if we're on the page without visiting it'
+      some_page.on do | page |
+        page.some_element.should be_visible
+      end
+    end
+
+
+**_Example:_**
+
+    feature "Supervillan Console" do
+
+      let(:supervillan_console) { SuperVillanConsole.new }
+
+      before :each do
+        supervillan_console.visit
+      end
+
+      scenario 'can arm doom button' do
+        supervillan_console.on do | con |
+          con.button_of_doom.arming_key.turn
+          con.button_of_doom.armed?.should be_true
+        end
+      end
+
+
+    end
+
 ***
 ***
 ***
