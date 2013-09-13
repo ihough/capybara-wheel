@@ -17,6 +17,7 @@ module Capybara
         end
 
         def_delegators  :capybara_element,
+                        :find,
                         :click,
                         :has_content?,
                         :checked?,
@@ -79,8 +80,7 @@ module Capybara
           @selector
         end
 
-        protected
-
+        private
 
         # Finds a capybara element representing this thing
         def capybara_element

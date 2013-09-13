@@ -21,7 +21,7 @@ module Capybara
       # execute a block in the context of this page
       def on
         unless on_page?
-          raise "We don't appear to be on #{description}"
+          raise "We don't appear to be on the #{self.class}"
         end
         yield self if block_given?
         self
@@ -38,7 +38,7 @@ module Capybara
       end
 
       def has_title?(expected_title)
-        capybara.has_css?("head title", :text => expected_title)
+        capybara.has_css?("head title", text: expected_title)
       end
 
       def self.element(name, selector, &block)

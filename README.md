@@ -136,7 +136,11 @@ Out of the box, Element accepts all the old familar Capybara Element actions / q
 
 Passing a block to element gives access to the Element object for the purpose of implamenting a subelement (see below) or rolling your own customised methods:
 
-**The `capybara_element` method is the direct accessor to the native Capybara element callback.**
+**The following messages are delegated to the native Capybara element callback.**
+
+```
+  #find, #click, #has_content?, #checked?, #text, #visible?, #present?, #selected?, #disabled?, #tag_name, #value, #set, #select_option, #unselect_option, #hover
+```
 
 **_Example:_**
 
@@ -175,7 +179,7 @@ When called inside an element block, the element behaves like an Element but is 
         element 'ArmingKey', 'li.key' do
 
           def turn
-            capybara_element.click
+            click
           end
 
         end
@@ -187,7 +191,7 @@ When called inside an element block, the element behaves like an Element but is 
        element 'ArmingKey', 'li.key' do
 
          def turn
-           capybara_element.click
+           click
          end
 
        end
