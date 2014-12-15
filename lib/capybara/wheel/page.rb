@@ -37,10 +37,6 @@ module Capybara
         raise NotImplementedError, "implement me, e.g. using #has_title?"
       end
 
-      def has_title?(expected_title)
-        capybara.has_css?("head title", text: expected_title)
-      end
-
       def self.element(name, selector, &block)
         begin
           element_klass = const_set("#{name}", Capybara::Wheel::ElementFactory.create_element_klass(selector, block))
