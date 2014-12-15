@@ -41,9 +41,9 @@ module Capybara
         capybara.has_css?("head title", text: expected_title)
       end
 
-      def self.element(name, selector, &block)
+      def self.element(name, selector, options = {}, &block)
         begin
-          element_klass = const_set("#{name}", Capybara::Wheel::ElementFactory.create_element_klass(selector, block))
+          element_klass = const_set("#{name}", Capybara::Wheel::ElementFactory.create_element_klass(selector, options, block))
         rescue NameError
           puts "We recommend using capitalized element and subelement names"
           name = name.capitalize!
