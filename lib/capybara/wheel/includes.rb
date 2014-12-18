@@ -3,8 +3,6 @@ require 'capybara/dsl'
 module Capybara
   module Wheel
     module Includes
-      include Capybara::DSL
-
       module ClassIncludes
         # Allow defining an element on a page or within another element
         def element(name, _selector, &block)

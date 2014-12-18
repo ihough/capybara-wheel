@@ -3,6 +3,7 @@ require 'capybara/wheel/includes'
 module Capybara
   module Wheel
     class Page
+      include Capybara::DSL
       include Capybara::Wheel::Includes
       extend Capybara::Wheel::Includes::ClassIncludes
 
