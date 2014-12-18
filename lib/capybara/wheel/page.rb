@@ -3,22 +3,16 @@ require 'capybara/wheel/includes'
 module Capybara
   module Wheel
     class Page
-
       include Capybara::Wheel::Includes
       extend Capybara::Wheel::Includes::ClassIncludes
 
-      # actively visits page and executes block in context
-      def visit(&block)
-        capybara.visit(path)
-        if block_given?
-          on(&block)
-        else
-          on_page?
-        end
-        return self
+      # Access to capybara
+      def capybara
+        Capybara.current_session
       end
+      alias_method :capybara_element, :capybara
 
-      # execute a block in the context of this page
+      # Execute a block in the context of this page
       def on
         unless on_page?
           raise "We don't appear to be on the #{self.class}"
@@ -27,29 +21,26 @@ module Capybara
         self
       end
 
-      # Returns the path (relative URI) of this page
-      def path
-        raise NotImplementedError, "implement to support page.visit"
-      end
-
       # Return true if the browser is on this page
       def on_page?
         raise NotImplementedError, "implement me, e.g. using #has_title?"
       end
 
-      def self.element(name, selector, &block)
-        begin
-          element_klass = const_set("#{name}", Capybara::Wheel::ElementFactory.create_element_klass(selector, block))
-        rescue NameError
-          puts "We recommend using capitalized element and subelement names"
-          name = name.capitalize!
-          retry
-        end
-
-        define_method(underscore(name).to_sym) { element_klass.new(selector) }
-        self
+      # Return the path (relative URI) of this page
+      def path
+        raise NotImplementedError, "implement me to support page.visit, e.g. '/relatve_URI_of_this_page'"
       end
 
+      # Visit the page and executes a block in its context
+      def visit(&block)
+        capybara.visit path
+        if block_given?
+          on &block
+        else
+          on_page?
+        end
+        return self
+      end
     end
   end
 end
