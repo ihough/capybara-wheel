@@ -14,22 +14,37 @@ module Capybara
         @scope = scope
       end
 
+      # Delegate Capybara::DSL methods to the capybara element representing this
+      # element. The Capybara::DSL methods cover most methods defined in:
+      #   Capybara::Node::Actions
+      #   Capybara::Node::Finders
+      #   Capybara::Node::Matchers
+      Capybara::Session::NODE_METHODS.each do |method|
+        def_delegator :capybara_element, method
+      end
+
+      # Delegate methods defined in Capybara::Node::Element to the capybara
+      # element representing this element. These need to be explicitly
+      # delegated because they are not included in the Capybara::DSL methods
       def_delegators :capybara_element,
-        :find,
-        :click,
-        :has_content?,
         :checked?,
-        :text,
-        :visible?,
-        :present?,
-        :selected?,
+        :click,
         :disabled?,
-        :tag_name,
-        :value,
-        :set,
-        :select_option,
-        :unselect_option,
+        :double_click,
+        :drag_to,
         :hover,
+        :path,
+        :present?,
+        :reload,
+        :right_click,
+        :selected?,
+        :select_option,
+        :set,
+        :tag_name,
+        :trigger,
+        :unselect_option,
+        :value,
+        :visible?,
         :[]
 
       # Finds a capybara element representing this element
