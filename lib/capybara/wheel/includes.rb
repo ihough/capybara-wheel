@@ -22,17 +22,15 @@ module Capybara
           end
           const_set name, klass
 
-          # Define .selector and #selector on CurrentClass::ElementName
-          klass.singleton_class.class_eval do
+          # Define CurrentClass::ElementName#selector
+          # This species how to find the capybara element for this element
+          klass.class_eval do
             define_method(:selector) { @selector = _selector }
           end
-          klass.class_eval do
-            def_delegator self, :selector
-          end
 
-          # Define CurrentClass#element_name to return an instance of
-          # CurrentClass::ElementName whose scope is set to the instance of
-          # CurrentClass -- this allows scoping capybara methods
+          # Define CurrentClass#element_name
+          # Returns an instance of CurrentClass::ElementName whose scope is set
+          # to the instance of CurrentClass on which the method was called
           define_method(underscore(name).to_sym) { klass.new self }
 
           # Evaluate any block in the context of CurrentClass::ElementName

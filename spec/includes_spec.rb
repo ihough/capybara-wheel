@@ -33,16 +33,12 @@ shared_examples 'a model that includes Capybara::Wheel::Includes::ClassIncludes'
       end
 
       it 'is named as if it were a subclass of this class' do
-        expect(element_class.name).to eq([described_class.name, element_name].join('::'))
+        expect(element_class.name).to eq([described_class.name, name].join('::'))
       end
 
-      it 'has selector defined at the class level' do
-        expect(element_class.selector).to eq(element_selector)
-      end
-
-      it 'gives instances access to the class selector method' do
-        instance = element_class.new subject
-        expect(instance.selector).to eq(element_class.selector)
+      it 'has a #selector method that returns the specified selector' do
+        expect(element_class.instance_methods).to include(:selector)
+        expect(element_instance.selector).to eq(element_selector)
       end
     end
 
