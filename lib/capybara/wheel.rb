@@ -1,4 +1,5 @@
 require 'capybara'
+
 require_relative 'wheel/version'
 require_relative 'wheel/page'
 require_relative 'wheel/element'
@@ -28,4 +29,6 @@ module Capybara
 end
 
 extend Capybara::Wheel::FeatureOverride
+
+require 'rspec'
 RSpec.configuration.include Capybara::Wheel, wheel_feature: true
