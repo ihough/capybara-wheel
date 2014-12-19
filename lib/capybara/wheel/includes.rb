@@ -4,7 +4,7 @@ module Capybara
   module Wheel
     module Includes
       module ClassIncludes
-        # Allow defining an element on a page or within another element
+        # Define an element on a page or within another element
         def element(name, _selector, &block)
           # Create a class inheriting from Capybara::Wheel::Element
           klass = Class.new Capybara::Wheel::Element
