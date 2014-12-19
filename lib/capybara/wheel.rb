@@ -5,16 +5,14 @@ require_relative 'wheel/element'
 
 module Capybara
   module Wheel
-    # main mixin to access wheel
-
-    def self.included(base)
-      base.instance_eval do
-        alias :background :before
-        alias :scenario :it
-        alias :given :let
-        alias :given! :let!
-      end
-    end
+    # def self.included(base)
+    #   base.instance_eval do
+    #     alias :background :before
+    #     alias :scenario :it
+    #     alias :given :let
+    #     alias :given! :let!
+    #   end
+    # end
 
     module FeatureOverride
       def feature(*args, &block)
@@ -26,7 +24,6 @@ module Capybara
         describe(*args, options, &block)
       end
     end
-
   end
 end
 
