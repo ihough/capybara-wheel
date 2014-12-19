@@ -7,15 +7,14 @@ RSpec.configure do |config|
 end
 
 feature 'runs as a wheel feature', :some_hook do
-
   it 'should pass' do
   end
 
-  it 'should be set as a wheel feature' do
-    example.metadata[:type].should == :wheel_feature
+  it 'should be set as a wheel feature' do |example|
+    expect(example.metadata[:type]).to eq(:wheel_feature)
   end
 
   it 'should pass the right hook' do
-    @hook_passed_on.should be_true
+    expect(@hook_passed_on).to be true
   end
 end
