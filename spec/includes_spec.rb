@@ -10,17 +10,17 @@ shared_examples 'a model that includes Capybara::Wheel::Includes::ClassIncludes'
   end
 
   describe '.element' do
-    let(:element_name) { 'RadElement' }
-    let(:element_selector) { '#rad_element' }
-    let(:element_accessor) { :rad_element }
-    let(:element_class) { described_class.element element_name, element_selector }
-    let(:element_instance) { subject.send element_accessor }
+    let(:name) { 'RadElement' }
+    let(:selector) { '#rad_element' }
+    let(:accessor) { :rad_element }
+    let(:element_class) { described_class.element name, selector }
+    let(:element_instance) { subject.send accessor }
 
-    # Undefine the element class and accessor method after each spec - otherwise
-    # later tests may fail b/c methods or classes are already defined
+    # Undefine the element class and accessor method after each spec -
+    # otherwise later tests may fail b/c methods or classes are already defined
     after :each do
-      described_class.send :remove_const, element_name.to_sym
-      described_class.send :remove_method, element_accessor
+      described_class.send :remove_const, name.to_sym
+      described_class.send :remove_method, accessor
     end
 
     describe 'returns a class for the element that' do
@@ -38,44 +38,44 @@ shared_examples 'a model that includes Capybara::Wheel::Includes::ClassIncludes'
 
       it 'has a #selector method that returns the specified selector' do
         expect(element_class.instance_methods).to include(:selector)
-        expect(element_instance.selector).to eq(element_selector)
+        expect(element_instance.selector).to eq(selector)
       end
     end
 
     describe 'handles bad element names' do
       it 'containing whitespace' do
         bad_name = "Rad \t\nElement"
-        element_class = described_class.element bad_name, element_selector
-        expect(element_class.name).to eq([described_class.name, element_name].join('::'))
+        element_class = described_class.element bad_name, selector
+        expect(element_class.name).to eq([described_class.name, name].join('::'))
       end
 
       it 'uncapitalized' do
         bad_name = 'radElement'
-        element_class = described_class.element bad_name, element_selector
-        expect(element_class.name).to eq([described_class.name, element_name].join('::'))
+        element_class = described_class.element bad_name, selector
+        expect(element_class.name).to eq([described_class.name, name].join('::'))
       end
 
       it 'whitespace uncapitalized' do
         bad_name = 'rad element'
-        element_class = described_class.element bad_name, element_selector
-        expect(element_class.name).to eq([described_class.name, element_name].join('::'))
+        element_class = described_class.element bad_name, selector
+        expect(element_class.name).to eq([described_class.name, name].join('::'))
       end
     end
 
     it 'defines an instance method on this class that returns a scoped element instance' do
-      expect(subject).not_to respond_to(element_accessor)
+      expect(subject).not_to respond_to(accessor)
       expect { element_class }.to change { described_class.instance_methods.length }.by(1)
 
       expect(element_instance).to be_a(element_class)
-      expect(element_instance.scope).to eq(subject)
+      expect(element_instance.scope).to be(subject)
     end
 
     describe 'accepts a block' do
-      let(:element_class) { described_class.element element_name, element_selector, &block }
+      let(:element_class) { described_class.element name, selector, &block }
 
       context 'method block' do
         let!(:element_class) {
-          described_class.element element_name, element_selector do
+          described_class.element name, selector do
             def rad_method
             end
           end
@@ -88,7 +88,7 @@ shared_examples 'a model that includes Capybara::Wheel::Includes::ClassIncludes'
 
       context 'element block' do
         let!(:element_class) {
-          described_class.element element_name, element_selector do
+          described_class.element name, selector do
             element 'SubElem', '.sub_elem'
           end
         }
@@ -104,7 +104,7 @@ shared_examples 'a model that includes Capybara::Wheel::Includes::ClassIncludes'
 
       context 'blocks within blocks' do
         let!(:element_class) {
-          described_class.element element_name, element_selector do
+          described_class.element name, selector do
             element 'SubElem', '.sub_elem' do
               element 'SubSubElem', 'sub_sub_elem' do
                 def sub_sub_method
