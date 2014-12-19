@@ -24,8 +24,8 @@ describe Capybara::Wheel::Element do
 
     before :each do
       Capybara::Wheel::Page.element 'RadElement', '#rad_element' do
-        element 'SubElem', '.sub_elem' do
-          element 'SubSubElem', 'sub_sub'
+        element 'SubElem', '.sub_elem', visible: true do
+          element 'SubSubElem', 'sub_sub', visible: false
         end
       end
       allow(page).to receive(:capybara_element) { MockCapybara.new 'Capybara#find' }
@@ -39,9 +39,9 @@ describe Capybara::Wheel::Element do
     end
 
     it 'returns the capybara element representing this element' do
-      expect(rad_element.capybara_element.path).to  eq('Capybara#find #rad_element')
-      expect(sub_elem.capybara_element.path).to     eq('Capybara#find #rad_element .sub_elem')
-      expect(sub_sub_elem.capybara_element.path).to eq('Capybara#find #rad_element .sub_elem sub_sub')
+      expect(rad_element.capybara_element.path).to  eq('Capybara#find #rad_element{}')
+      expect(sub_elem.capybara_element.path).to     eq('Capybara#find #rad_element{} .sub_elem{:visible=>true}')
+      expect(sub_sub_elem.capybara_element.path).to eq('Capybara#find #rad_element{} .sub_elem{:visible=>true} sub_sub{:visible=>false}')
     end
   end
 
@@ -52,8 +52,8 @@ describe Capybara::Wheel::Element do
       @path = path
     end
 
-    def find(selector)
-      self.class.new [path, selector].join(' ')
+    def find(selector, options)
+      self.class.new [path, [selector, options].join].join(' ')
     end
   end
 end

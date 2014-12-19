@@ -5,7 +5,7 @@ module Capybara
     module Includes
       module ClassIncludes
         # Define an element on a page or within another element
-        def element(name, _selector, &block)
+        def element(name, _selector, _options = {}, &block)
           # Create a class inheriting from Capybara::Wheel::Element
           klass = Class.new Capybara::Wheel::Element
 
@@ -22,10 +22,11 @@ module Capybara
           end
           const_set name, klass
 
-          # Define CurrentClass::ElementName#selector
-          # This species how to find the capybara element for this element
+          # Define CurrentClass::ElementName#selector and #options
+          # These specify how to find the capybara element for this element
           klass.class_eval do
             define_method(:selector) { @selector = _selector }
+            define_method(:options) { @options = _options }
           end
 
           # Define CurrentClass#element_name

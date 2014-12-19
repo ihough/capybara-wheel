@@ -70,6 +70,16 @@ shared_examples 'a model that includes Capybara::Wheel::Includes::ClassIncludes'
       expect(element_instance.scope).to be(subject)
     end
 
+    describe 'accepts options' do
+      let(:options) { { visible: false } }
+      let(:element_class) { described_class.element name, selector, options }
+
+      it 'sets a #options method on the element class' do
+        expect(element_class.instance_methods).to include(:options)
+        expect(element_instance.options).to eq(visible: false)
+      end
+    end
+
     describe 'accepts a block' do
       let(:element_class) { described_class.element name, selector, &block }
 

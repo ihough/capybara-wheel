@@ -48,7 +48,7 @@ module Capybara
 
       # Finds a capybara element representing this element
       def capybara_element
-        scope.capybara_element.find selector
+        scope.capybara_element.find selector, options
       end
     end
   end
