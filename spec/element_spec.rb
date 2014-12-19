@@ -1,50 +1,59 @@
 require 'spec_helper'
 
-feature 'Element' do
-  let(:element_selector)  { '#some-selector' }
-  let(:element)           { Capybara::Wheel::Element }
-  let(:element_instance)  {  element.new(element_selector) }
+describe Capybara::Wheel::Element do
+  let(:page) { Capybara::Wheel::Page.new }
 
-  it 'has access to capybara' do
-    element_instance.methods.include?(:capybara).should be_true
+  subject { described_class.new page }
+
+  it 'extends Capybara::Wheel::Includes::ClassIncludes' do
+    expect(described_class).to respond_to(:element)
   end
 
-  it 'has delegators for Capybara actions' do
-    pending 'grab all the actions from Capybara and ensure delegators are implemented'
+  it 'does not allow scopeless instances' do
+    expect { described_class.new }.to raise_error(ArgumentError)
   end
 
-  context 'self.element' do
-    let(:element_selector)    { '#rad-parent-selector' }
+  describe 'Capybara methods' do
+    pending 'ensure that any Capybara methods are delegated to #capybara_element'
+  end
 
-    let(:subelement_name)     { 'RadSubElement' }
-    let(:subelement_selector) { '#rad-sub-selector' }
+  describe '#capybara_element' do
+    let(:rad_element)  { page.rad_element }
+    let(:sub_elem)     { rad_element.sub_elem }
+    let(:sub_sub_elem) { sub_elem.sub_sub_elem }
 
-    before do
-      element_instance.instance_eval do
-        element('RadSubElement', '#rad-sub-selector')
+    before :each do
+      Capybara::Wheel::Page.element 'RadElement', '#rad_element' do
+        element 'SubElem', '.sub_elem' do
+          element 'SubSubElem', 'sub_sub'
+        end
       end
+      allow(page).to receive(:capybara_element) { MockCapybara.new 'Capybara#find' }
     end
 
-    it 'created a method for calling the element' do
-      element_instance.should respond_to(:rad_sub_element)
+    # Undefine the element class and accessor method after each spec - otherwise
+    # later tests may fail b/c methods or classes are already defined
+    after :each do
+      Capybara::Wheel::Page.send :remove_const, :RadElement
+      Capybara::Wheel::Page.send :remove_method, :rad_element
     end
 
-    it 'create a (sub)element with parent element context' do
-      element_instance.send(:rad_sub_element).scope.should == element_instance
-    end
-
-    it 'the find would be scoped to parent' do
-      subelement             = element_instance.send(:rad_sub_element)
-      mock_capybara_session  = mock(Capybara::Session)
-      mock_capybara_element  = mock('Capybara::Element')
-      Capybara.stub!(:current_session).and_return(mock_capybara_session)
-      mock_capybara_session.stub(:find).with(element_selector).and_return(mock_capybara_element)
-      mock_capybara_element.stub(:find).with(subelement_selector).and_return(mock_capybara_element)
-
-      element_instance.should_receive(:capybara_element).once.and_return(mock_capybara_element)
-
-      subelement.send(:capybara_element)
+    it 'returns the capybara element representing this element' do
+      expect(rad_element.capybara_element.path).to  eq('Capybara#find #rad_element')
+      expect(sub_elem.capybara_element.path).to     eq('Capybara#find #rad_element .sub_elem')
+      expect(sub_sub_elem.capybara_element.path).to eq('Capybara#find #rad_element .sub_elem sub_sub')
     end
   end
 
+  class MockCapybara
+    attr_reader :path
+
+    def initialize(path)
+      @path = path
+    end
+
+    def find(selector)
+      self.class.new [path, selector].join(' ')
+    end
+  end
 end
