@@ -4,7 +4,6 @@ require 'forwardable'
 module Capybara
   module Wheel
     class Element
-      include Capybara::Wheel::Includes
       extend Capybara::Wheel::Includes::ClassIncludes
       extend Forwardable
 
